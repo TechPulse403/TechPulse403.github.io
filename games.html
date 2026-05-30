@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-435XG5B8ZM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-435XG5B8ZM');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skrypt — Games</title>
+    <link rel="icon" type="image/png" href="/images/gc.png">
+    <meta name="description" content="Xenon Games — Play the best unblocked games.">
+    <meta name="keywords" content="Xenon, Games, Unblocked">
+    <meta name="author" content="Xenon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="styles/games.css">
+</head>
+<body>
+  <div id="games"></div>
+
+  <script src="https://cdn.jsdelivr.net/gh/luminsdk/script@latest/lumin.min.js"></script>
+  <script>
+  Lumin.init({
+    container: '#games',
+    theme: 'dark'
+  });
+</script>
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="imgs/logo.png" alt="logo" height=50px width=50px style="border-radius: 20px;">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html" data-label="Home"><i data-lucide="home"></i></a></li>
+            <li><a href="games.html" data-label="Games" class="active"><i data-lucide="gamepad-2"></i></a></li>
+            <li><a href="apps.html" data-label="Apps"><i data-lucide="layers"></i></a></li>
+            <li><a href="music" data-label="Music"><i data-lucide="music-4"></i></a></li>
+            <li><div class="nav-divider"></div></li>
+            <li><a href="chat" data-label="Chat" target="_blank"><i data-lucide="message-square"></i></a></li>
+            <li><a href="partners" data-label="Partners"><i data-lucide="handshake"></i></a></li>
+            <li><a href="extra" data-label="Extra"><i data-lucide="more-horizontal"></i></a></li>
+            <li><a href="settings" data-label="Settings"><i data-lucide="settings"></i></a></li>
+        </ul>
+    </aside>
+
+    <main class="main">
+        <div class="page-header">
+            <h1>Games</h1>
+            <p>Pick a game and start playing instantly.</p>
+        </div>
+
+        <div class="search-bar">
+            <i data-lucide="search"></i>
+            <input type="text" id="gameSearch" placeholder="Search games..." onkeyup="filterGames()">
+        </div>
+
+        
+    </main>
+
+    <script>
+        function filterGames() {
+            const query = document.getElementById('gameSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.game-card');
+            cards.forEach(card => {
+                const name = card.querySelector('p').textContent.toLowerCase();
+                card.style.display = name.includes(query) ? '' : 'none';
+            });
+        }
+        lucide.createIcons();
+    </script>
+</body>
+</html>
