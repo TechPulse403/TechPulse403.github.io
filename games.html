@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechPulse — Games</title>
+    <link rel="icon" type="image/png" href="/images/gc.png">
+    <meta name="description" content="Xenon Games — Play the best unblocked games.">
+    <meta name="keywords" content="Xenon, Games, Unblocked">
+    <meta name="author" content="Xenon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        :root {
+            --bg-deep: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-hover: #1a1a28;
+            --accent: #00d4ff;
+            --text-primary: #e8e8f0;
+            --text-secondary: #8b8ba3;
+            --border: rgba(255, 255, 255, 0.06);
+            --nav-width: 80px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-deep);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: var(--nav-width);
+            background: rgba(18, 18, 26, 0.85);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 22px;
+            color: var(--accent);
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            cursor: default;
+            user-select: none;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            padding: 0 12px;
+            flex: 1;
+        }
+
+        .nav-links li { width: 100%; }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 48px;
+            border-radius: 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            position: relative;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent);
+            opacity: 0;
+            border-radius: 14px;
+            transition: opacity 0.25s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+            background: var(--bg-hover);
+            box-shadow: inset 0 0 0 1px rgba(0, 212, 255, 0.15);
+        }
+
+        .nav-links a:hover::before,
+        .nav-links a.active::before {
+            opacity: 0.08;
+        }
+
+        .nav-links a svg {
+            position: relative;
+            z-index: 1;
+            transition: transform 0.25s ease;
+            width: 20px;
+            height: 20px;
+        }
+
+        .nav-links a:hover svg { transform: scale(1.15); }
+
+        .nav-links a::after {
+            content: attr(data-label);
+            position: absolute;
+            left: calc(100% + 16px);
+            top: 50%;
+            transform: translateY(-50%) translateX(-8px);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            transition: all 0.2s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links a:hover::after {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+        }
+
+        .nav-divider {
+            width: 32px;
+            height: 1px;
+            background: var(--border);
+            margin: 12px 0;
+        }
+
+        .main {
+            margin-left: var(--nav-width);
+            padding: 40px;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+            animation: fadeInUp 0.6s ease both;
+        }
+
+        .page-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 42px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: -1px;
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-top: 8px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px 20px;
+            margin-bottom: 32px;
+            max-width: 480px;
+            transition: border-color 0.25s ease;
+            animation: fadeInUp 0.6s ease 0.1s both;
+        }
+
+        .search-bar:focus-within {
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .search-bar svg {
+            color: var(--text-secondary);
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            width: 100%;
+        }
+
+        .search-bar input::placeholder { color: var(--text-secondary); }
+
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            animation: fadeInUp 0.6s ease 0.2s both;
+        }
+
+        .game-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            cursor: pointer;
+            display: block;
+        }
+
+        .game-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(0, 212, 255, 0.2);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .game-card .thumb {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            object-fit: cover;
+            display: block;
+            border-bottom: 1px solid var(--border);
+            transition: transform 0.4s ease;
+        }
+
+        .game-card:hover .thumb { transform: scale(1.05); }
+
+        .game-card .info {
+            padding: 14px 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .game-card p {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .game-card .play-hint {
+            font-size: 11px;
+            color: var(--accent);
+            margin-top: 4px;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: all 0.25s ease;
+        }
+
+        .game-card:hover .play-hint {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .sidebar {
+                width: 100%;
+                height: 64px;
+                flex-direction: row;
+                padding: 0 20px;
+                bottom: 0;
+                top: auto;
+                border-right: none;
+                border-top: 1px solid var(--border);
+            }
+            .logo { display: none; }
+            .nav-links {
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 0;
+                gap: 0;
+            }
+            .nav-links a {
+                width: 48px;
+                height: 48px;
+            }
+            .nav-links a::after { display: none; }
+            .nav-divider { display: none; }
+            .main {
+                margin-left: 0;
+                margin-bottom: 64px;
+                padding: 24px;
+            }
+            .page-header h1 { font-size: 28px; }
+            .games-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo">X</div>
+        <ul class="nav-links">
+            <li><a href="index.html" data-label="Home"><i data-lucide="home"></i></a></li>
+            <li><a href="games" data-label="Games" class="active"><i data-lucide="gamepad-2"></i></a></li>
+            <li><a href="apps" data-label="Apps"><i data-lucide="layers"></i></a></li>
+            <li><a href="links" data-label="Links"><i data-lucide="link"></i></a></li>
+            <li><div class="nav-divider"></div></li>
+            <li><a href="https://discord.gg/6GewnXsjwB" data-label="Discord" target="_blank"><i data-lucide="message-circle"></i></a></li>
+            <li><a href="https://play.szvy.win/embed.html#https://www5.cbox.ws/box/?boxid=955149&boxtag=tkebzb" data-label="Chat" target="_blank"><i data-lucide="message-square"></i></a></li>
+            <li><a href="partners" data-label="Partners"><i data-lucide="handshake"></i></a></li>
+            <li><a href="extra" data-label="Extra"><i data-lucide="more-horizontal"></i></a></li>
+            <li><a href="settings" data-label="Settings"><i data-lucide="settings"></i></a></li>
+        </ul>
+    </aside>
+
+    <main class="main">
+        <div class="page-header">
+            <h1>Games</h1>
+            <p>Pick a game and start playing instantly.</p>
+        </div>
+
+        <div class="search-bar">
+            <i data-lucide="search"></i>
+            <input type="text" id="gameSearch" placeholder="Search games..." onkeyup="filterGames()">
+        </div>
+
+        <div class="games-grid" id="gamesGrid">
+            <a href="g/slope/" class="game-card">
+                <img src="images/games/slope.png" alt="Slope" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/slope.png" alt="Slope" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>Slope</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="g/polytrack" class="game-card">
+                <img src="images/games/polytrack.png" alt="Polytrack" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/polytrack.png" alt="Polytrack" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>Polytrack</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="" class="game-card">
+                <img src="images/games/basket-random.png" alt="Basket Random" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/basket-random.png" alt="Basket Random" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>Basket Random</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/soccer-random.png" alt="Soccer Random" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/soccer-random.png" alt="Soccer Random" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>Soccer Random</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/volley-random.png" alt="Volley Random" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/volley-random.png" alt="Volley Random" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>Volley Random</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/boxing-random.png" alt="Boxing Random" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/boxing-random.png" alt="Boxing Random" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>Boxing Random</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/2048.png" alt="2048" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/2048.png" alt="2048" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>2048</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/xx142-b2exe.png" alt="xx142-b2exe" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/xx142-b2exe.png" alt="xx142-b2exe" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>xx142-b2exe</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/10-minutes-till-dawn.png" alt="10 Minutes Till Dawn" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/10-minutes-till-dawn.png" alt="10 Minutes Till Dawn" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>10 Minutes Till Dawn</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/a-dance-of-fire-and-ice.png" alt="A Dance Of Fire And Ice" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/a-dance-of-fire-and-ice.png" alt="A Dance Of Fire And Ice" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>A Dance Of Fire And Ice</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/there-is-no-game.png" alt="There Is No Game" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/there-is-no-game.png" alt="There Is No Game" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>There Is No Game</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/1-on-1-soccer.png" alt="1 On 1 Soccer" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/1-on-1-soccer.png" alt="1 On 1 Soccer" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>1 On 1 Soccer</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/cookie-clicker.png" alt="Cookie Clicker" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/cookie-clicker.png" alt="Cookie Clicker" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>Cookie Clicker</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/bitlife.png" alt="Bitlife" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/bitlife.png" alt="Bitlife" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>Bitlife</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/snow-rider-3d.png" alt="Snow Rider 3D" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/snow-rider-3d.png" alt="Snow Rider 3D" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>Snow Rider 3D</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/red-vs-bluez.png" alt="Red Vs Bluez" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/red-vs-bluez.png" alt="Red Vs Bluez" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>Red Vs Bluez</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/horde-killer.png" alt="Horde Killer" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/horde-killer.png" alt="Horde Killer" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>Horde Killer</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/2d-rocket-league.png" alt="2D Rocket League" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/2d-rocket-league.png" alt="2D Rocket League" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>2D Rocket League</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/cluster-rush.png" alt="Cluster Rush" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/cluster-rush.png" alt="Cluster Rush" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>Cluster Rush</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/bad-ice-cream.png" alt="Bad Ice Cream" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/bad-ice-cream.png" alt="Bad Ice Cream" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>Bad Ice Cream</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/time-shooter-3.png" alt="Time Shooter 3" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/time-shooter-3.png" alt="Time Shooter 3" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>Time Shooter 3</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/cubefield-v2.png" alt="CubeField V2" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/cubefield-v2.png" alt="CubeField V2" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>CubeField V2</p><div class="play-hint">Click to Play</div></div>
+            </a>
+            <a href="1.html" class="game-card">
+                <img src="images/games/geometry-dash-lite.png" alt="Geometry Dash Lite" class="thumb" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">
+                <div class="fallback" style="display:none;width:100%;aspect-ratio:16/10;align-items:center;justify-content:center;background:var(--bg-hover);"><img src="images/games/geometry-dash-lite.png" alt="Geometry Dash Lite" style="width:100%;height:100%;object-fit:cover;"></div>
+                <div class="info"><p>Geometry Dash Lite</p><div class="play-hint">Click to Play</div></div>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        function filterGames() {
+            const query = document.getElementById('gameSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.game-card');
+            cards.forEach(card => {
+                const name = card.querySelector('p').textContent.toLowerCase();
+                card.style.display = name.includes(query) ? '' : 'none';
+            });
+        }
+        lucide.createIcons();
+    </script>
+</body>
+</html>
