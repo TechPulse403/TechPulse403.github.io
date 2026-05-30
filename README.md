@@ -6,8 +6,6 @@
 ---
 
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)  
-![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)  
-![Node](https://img.shields.io/badge/Node.js-18+-green?style=for-the-badge&logo=node.js)    
 ![Speed](https://img.shields.io/badge/Speed-Blazing%20Fast-orange?style=for-the-badge)  
 
 </div>
