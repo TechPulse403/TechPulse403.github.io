@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechPulse</title>
+    <link rel="icon" type="image/png" href="/images/gc.png">
+    <meta name="description" content="Xenon — A sleek, modern hub for games, apps, and more.">
+    <meta name="keywords" content="Xenon, Games, Apps, Hub">
+    <meta name="author" content="Xenon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        :root {
+            --bg-deep: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-hover: #1a1a28;
+            --accent: #00d4ff;
+            --text-primary: #e8e8f0;
+            --text-secondary: #8b8ba3;
+            --border: rgba(255, 255, 255, 0.06);
+            --nav-width: 80px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-deep);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Subtle grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: var(--nav-width);
+            background: rgba(18, 18, 26, 0.85);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 0;
+            z-index: 100;
+            transition: width 0.3s ease;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 22px;
+            color: var(--accent);
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            cursor: default;
+            user-select: none;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            padding: 0 12px;
+            flex: 1;
+        }
+
+        .nav-links li {
+            width: 100%;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 48px;
+            border-radius: 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            position: relative;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent);
+            opacity: 0;
+            border-radius: 14px;
+            transition: opacity 0.25s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+            background: var(--bg-hover);
+            box-shadow: inset 0 0 0 1px rgba(0, 212, 255, 0.15);
+        }
+
+        .nav-links a:hover::before,
+        .nav-links a.active::before {
+            opacity: 0.08;
+        }
+
+        .nav-links a i,
+        .nav-links a svg {
+            position: relative;
+            z-index: 1;
+            transition: transform 0.25s ease;
+            width: 20px;
+            height: 20px;
+        }
+
+        .nav-links a:hover i,
+        .nav-links a:hover svg {
+            transform: scale(1.15);
+        }
+
+        /* Tooltip */
+        .nav-links a::after {
+            content: attr(data-label);
+            position: absolute;
+            left: calc(100% + 16px);
+            top: 50%;
+            transform: translateY(-50%) translateX(-8px);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            transition: all 0.2s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links a:hover::after {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+        }
+
+        /* Divider */
+        .nav-divider {
+            width: 32px;
+            height: 1px;
+            background: var(--border);
+            margin: 12px 0;
+        }
+
+        /* Main Content */
+        .main {
+            margin-left: var(--nav-width);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            padding: 40px;
+        }
+
+        .hero {
+            text-align: center;
+            max-width: 700px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .hero-badge .pulse {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 20px;
+            color: #ffffff;
+            animation: fadeInUp 0.8s ease 0.15s both;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 500px;
+            margin: 0 auto 40px;
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.45s both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg-deep);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: #33ddff;
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-hover);
+            border-color: rgba(0, 212, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Stats row */
+        .stats {
+            display: flex;
+            gap: 48px;
+            margin-top: 60px;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 4px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll indicator */
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .scroll-hint i,
+        .scroll-hint svg {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .sidebar {
+                width: 100%;
+                height: 64px;
+                flex-direction: row;
+                padding: 0 20px;
+                bottom: 0;
+                top: auto;
+                border-right: none;
+                border-top: 1px solid var(--border);
+            }
+            .logo { display: none; }
+            .nav-links {
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 0;
+                gap: 0;
+            }
+            .nav-links a {
+                width: 48px;
+                height: 48px;
+            }
+            .nav-links a::after { display: none; }
+            .nav-divider { display: none; }
+            .main {
+                margin-left: 0;
+                margin-bottom: 64px;
+                padding: 24px;
+            }
+            .stats { gap: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo">X</div>
+        <ul class="nav-links">
+            <li><a href="index" data-label="Home" class="active"><i data-lucide="home"></i></a></li>
+            <li><a href="games" data-label="Games"><i data-lucide="gamepad-2"></i></a></li>
+            <li><a href="apps" data-label="Apps"><i data-lucide="layers"></i></a></li>
+            <li><a href="links" data-label="Links"><i data-lucide="link"></i></a></li>
+            <li><div class="nav-divider"></div></li>
+            <li><a href="https://discord.gg/6GewnXsjwB" data-label="Discord" target="_blank"><i data-lucide="message-circle"></i></a></li>
+            <li><a href="https://play.szvy.win/embed.html#https://www5.cbox.ws/box/?boxid=955149&boxtag=tkebzb" data-label="Chat" target="_blank"><i data-lucide="message-square"></i></a></li>
+            <li><a href="partners" data-label="Partners"><i data-lucide="handshake"></i></a></li>
+            <li><a href="extra" data-label="Extra"><i data-lucide="more-horizontal"></i></a></li>
+            <li><a href="settings" data-label="Settings"><i data-lucide="settings"></i></a></li>
+        </ul>
+    </aside>
+
+    <main class="main">
+        <div class="hero">
+            <div class="hero-badge">
+                <span class="pulse"></span>
+                Early Access
+            </div>
+            <h1>TechPulse</h1>
+            <p>The new era of gaming sites</p>
+            <div class="hero-actions">
+                <a href="games" class="btn btn-primary">
+                    <i data-lucide="gamepad-2"></i>
+                    Explore Games
+                </a>
+                <a href="apps" class="btn btn-secondary">
+                    <i data-lucide="layers"></i>
+                    Browse Apps
+                </a>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value">10+</div>
+                <div class="stat-label">Games</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">2+</div>
+                <div class="stat-label">Apps</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">1+</div>
+                <div class="stat-label">Users</div>
+            </div>
+        </div>
+
+        <div class="scroll-hint">
+            <span>Scroll</span>
+            <i data-lucide="chevron-down"></i>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
