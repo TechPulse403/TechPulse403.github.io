@@ -24,15 +24,6 @@
     <link rel="stylesheet" href="styles/games.css">
 </head>
 <body>
-  <div id="games"></div>
-
-  <script src="https://cdn.jsdelivr.net/gh/luminsdk/script@latest/lumin.min.js"></script>
-  <script>
-  Lumin.init({
-    container: '#games',
-    theme: 'dark'
-  });
-</script>
     <aside class="sidebar">
         <div class="logo">
             <img src="imgs/logo.png" alt="logo" height=50px width=50px style="border-radius: 20px;">
@@ -55,11 +46,15 @@
             <h1>Games</h1>
             <p>Pick a game and start playing instantly.</p>
         </div>
+<div id="games"></div>
 
-        <div class="search-bar">
-            <i data-lucide="search"></i>
-            <input type="text" id="gameSearch" placeholder="Search games..." onkeyup="filterGames()">
-        </div>
+  <script src="https://cdn.jsdelivr.net/gh/luminsdk/script@latest/lumin.min.js"></script>
+  <script>
+  Lumin.init({
+    container: '#games',
+    theme: 'dark'
+  });
+</script>
 
         
     </main>
