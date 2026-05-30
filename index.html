@@ -38,7 +38,6 @@
             overflow-x: hidden;
         }
 
-        /* Subtle grid background */
         body::before {
             content: '';
             position: fixed;
@@ -51,7 +50,6 @@
             z-index: 0;
         }
 
-        /* Sidebar */
         .sidebar {
             position: fixed;
             left: 0;
@@ -144,7 +142,6 @@
             transform: scale(1.15);
         }
 
-        /* Tooltip */
         .nav-links a::after {
             content: attr(data-label);
             position: absolute;
@@ -172,7 +169,6 @@
             transform: translateY(-50%) translateX(0);
         }
 
-        /* Divider */
         .nav-divider {
             width: 32px;
             height: 1px;
@@ -180,7 +176,6 @@
             margin: 12px 0;
         }
 
-        /* Main Content */
         .main {
             margin-left: var(--nav-width);
             min-height: 100vh;
@@ -293,7 +288,6 @@
             transform: translateY(-2px);
         }
 
-        /* Stats row */
         .stats {
             display: flex;
             gap: 48px;
@@ -331,7 +325,6 @@
             }
         }
 
-        /* Scroll indicator */
         .scroll-hint {
             position: absolute;
             bottom: 30px;
@@ -360,7 +353,6 @@
             50% { transform: translateX(-50%) translateY(8px); }
         }
 
-        /* Responsive */
         @media (max-width: 640px) {
             .sidebar {
                 width: 100%;
