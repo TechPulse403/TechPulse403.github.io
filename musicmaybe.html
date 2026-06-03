@@ -790,12 +790,12 @@
     <script>
         const placeholderSongs = {
             'Eminem': [
-                { title: Without Me', duration: '4:50', file: 'music/eminem/without-me.mp3' },
-                { title: 'Starboy', duration: '3:50', file: 'music/weeknd/starboy.mp3' },
-                { title: 'Die For You', duration: '4:20', file: 'music/weeknd/die-for-you.mp3' },
-                { title: 'Save Your Tears', duration: '3:35', file: 'music/weeknd/save-your-tears.mp3' },
-                { title: 'The Hills', duration: '4:02', file: 'music/weeknd/the-hills.mp3' },
-                { title: 'Can\'t Feel My Face', duration: '3:33', file: 'music/weeknd/cant-feel-my-face.mp3' },
+                { title: 'Without Me', duration: '4:50', file: 'music/eminem/without-me.mp3' },
+                { title: 'Lose Yourself', duration: '5:26', file: 'music/eminem/lose-yourself.mp3' },
+                { title: 'The Real Slim Shady', duration: '4:44', file: 'music/eminem/the-real-slim-shady.mp3' },
+                { title: 'Stan', duration: '6:44', file: 'music/eminem/stan.mp3' },
+                { title: 'Till I Collapse', duration: '4:57', file: 'music/eminem/till-i-collapse.mp3' },
+                { title: 'Not Afraid', duration: '4:08', file: 'music/eminem/not-afraid.mp3' },
             ],
             'Drake': [
                 { title: 'God\'s Plan', duration: '3:19', file: 'music/drake/gods-plan.mp3' },
@@ -850,11 +850,13 @@
         let isPlaying = false;
         let audio = new Audio();
         let currentArtistImage = '';
+        let filteredSongs = [];
 
         function selectArtist(name, image) {
             currentArtist = name;
             currentArtistImage = image;
             currentSongs = placeholderSongs[name] || [];
+            filteredSongs = [...currentSongs];
             currentSongIndex = 0;
 
             document.getElementById('artistName').textContent = name;
@@ -862,7 +864,7 @@
             document.getElementById('songView').classList.add('active');
             document.getElementById('songSearch').value = '';
 
-            renderSongs(currentSongs);
+            renderSongs(filteredSongs);
             lucide.createIcons();
         }
 
@@ -874,8 +876,11 @@
 
         function renderSongs(songs) {
             const list = document.getElementById('songList');
-            list.innerHTML = songs.map((song, index) => `
-                <div class="song-item ${index === currentSongIndex && isPlaying ? 'playing' : ''}" onclick="playSong(${index})">
+            list.innerHTML = songs.map((song, index) => {
+                const actualIndex = currentSongs.indexOf(song);
+                const isCurrent = actualIndex === currentSongIndex && isPlaying;
+                return `
+                <div class="song-item ${isCurrent ? 'playing' : ''}" onclick="playSong(${actualIndex})">
                     <img src="${currentArtistImage}" alt="" class="song-thumb" onerror="this.src='images/artists/default.jpg'">
                     <div class="song-info">
                         <h4>${song.title}</h4>
@@ -883,17 +888,18 @@
                     </div>
                     <span class="song-duration">${song.duration}</span>
                     <div class="song-play-icon">
-                        <i data-lucide="${index === currentSongIndex && isPlaying ? 'pause' : 'play'}"></i>
+                        <i data-lucide="${isCurrent ? 'pause' : 'play'}"></i>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
             lucide.createIcons();
         }
 
         function filterSongs() {
             const query = document.getElementById('songSearch').value.toLowerCase();
-            const filtered = currentSongs.filter(s => s.title.toLowerCase().includes(query));
-            renderSongs(filtered);
+            filteredSongs = currentSongs.filter(s => s.title.toLowerCase().includes(query));
+            renderSongs(filteredSongs);
         }
 
         function playSong(index) {
@@ -906,7 +912,7 @@
             isPlaying = true;
 
             updatePlayerUI(song);
-            renderSongs(currentSongs);
+            renderSongs(filteredSongs.length > 0 ? filteredSongs : currentSongs);
             document.getElementById('musicPlayer').classList.remove('hidden');
         }
 
@@ -932,7 +938,7 @@
                 document.getElementById('playIcon').setAttribute('data-lucide', 'pause');
             }
             lucide.createIcons();
-            renderSongs(currentSongs);
+            renderSongs(filteredSongs.length > 0 ? filteredSongs : currentSongs);
         }
 
         function nextSong() {
@@ -982,7 +988,6 @@
             nextSong();
         });
 
-  
         lucide.createIcons();
     </script>
 </body>
