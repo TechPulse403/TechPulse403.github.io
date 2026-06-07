@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings - Skrypt</title>
+<link rel="icon" type="image/png" href="/images/gc.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="theme-loader.js"></script>
+<link rel="stylesheet" href="styles/index.css">
+<style>
+.settings-container{max-width:900px;margin:0 auto;padding:40px;width:100%;}
+.settings-header{margin-bottom:48px;animation:fadeInUp 0.6s ease both;}
+.settings-header h1{font-family:'Orbitron',sans-serif;font-size:clamp(32px,5vw,48px);font-weight:900;color:var(--text-primary);margin-bottom:12px;letter-spacing:-1px;}
+.settings-header p{color:var(--text-secondary);font-size:16px;line-height:1.6;}
+.theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;animation:fadeInUp 0.6s ease 0.1s both;}
+.theme-card{position:relative;padding:24px;background:var(--bg-card);border:2px solid var(--border);border-radius:16px;cursor:pointer;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);overflow:hidden;}
+.theme-card::before{content:'';position:absolute;inset:0;background:var(--accent);opacity:0;transition:opacity 0.3s ease;}
+.theme-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 8px 32px rgba(0,0,0,0.3);}
+.theme-card:hover::before{opacity:0.05;}
+.theme-card.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 8px 32px rgba(0,0,0,0.4);}
+.theme-card.active::after{content:'';position:absolute;top:12px;right:12px;width:24px;height:24px;background:var(--accent);border-radius:50%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;background-size:14px;}
+.theme-preview{display:flex;gap:8px;margin-bottom:16px;position:relative;z-index:1;}
+.color-dot{width:36px;height:36px;border-radius:10px;border:2px solid rgba(255,255,255,0.1);box-shadow:0 2px 8px rgba(0,0,0,0.2);}
+.theme-info{position:relative;z-index:1;}
+.theme-name{font-family:'Orbitron',sans-serif;font-weight:700;font-size:15px;color:var(--text-primary);margin-bottom:4px;letter-spacing:0.5px;}
+.theme-desc{font-size:13px;color:var(--text-secondary);line-height:1.4;}
+@media(max-width:640px){.settings-container{padding:24px;}.theme-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+<div class="logo"><img src="imgs/logo.png" alt="logo" height="50" width="50" style="border-radius:20px;"></div>
+<ul class="nav-links">
+<li><a href="index.html" data-label="Home"><i data-lucide="home"></i></a></li>
+<li><a href="games.html" data-label="Games"><i data-lucide="gamepad-2"></i></a></li>
+<li><a href="apps.html" data-label="Apps"><i data-lucide="layers"></i></a></li>
+<li><a href="music" data-label="Music"><i data-lucide="music-4"></i></a></li>
+<li><div class="nav-divider"></div></li>
+<li><a href="chat" data-label="Chat" target="_blank"><i data-lucide="message-square"></i></a></li>
+<li><a href="partners" data-label="Partners"><i data-lucide="handshake"></i></a></li>
+<li><a href="extra" data-label="Extra"><i data-lucide="more-horizontal"></i></a></li>
+<li><a href="settings.html" data-label="Settings" class="active"><i data-lucide="settings"></i></a></li>
+</ul>
+</aside>
+<main class="main">
+<div class="settings-container">
+<div class="settings-header">
+<h1>Settings</h1>
+<p>Pick a theme. It saves automatically and applies everywhere.</p>
+</div>
+<div class="theme-grid" id="themeGrid"></div>
+</div>
+</main>
+<script>
+const themes=[
+{id:'dark',name:'Dark Nebula',desc:'Default deep space',colors:['#0a0a0f','#00d4ff','#12121a']},
+{id:'midnight',name:'Midnight Blue',desc:'Cool blue tones',colors:['#020617','#3b82f6','#0f172a']},
+{id:'cyber',name:'Cyberpunk',desc:'Neon cyan vibe',colors:['#0a0a0a','#22d3ee','#141414']},
+{id:'sunset',name:'Sunset',desc:'Warm amber glow',colors:['#1a0a0a','#f59e0b','#2a1a1a']},
+{id:'forest',name:'Forest',desc:'Natural green',colors:['#0a1f0a','#10b981','#1a2e1a']},
+{id:'light',name:'Light Mode',desc:'Clean & minimal',colors:['#f8fafc','#6366f1','#ffffff']},
+{id:'crimson',name:'Crimson',desc:'Bold red gaming',colors:['#1a0a0f','#f43f5e','#2a1a1f']},
+{id:'ocean',name:'Ocean',desc:'Deep sea blue',colors:['#0a0f1a','#0ea5e9','#121a2a']},
+{id:'violet',name:'Violet',desc:'Royal purple',colors:['#120a1f','#a855f7','#1f1230']},
+{id:'gold',name:'Gold',desc:'Luxury amber',colors:['#1a1500','#eab308','#2a2400']},
+{id:'rose',name:'Rose',desc:'Soft pink',colors:['#1a0a10','#fb7185','#2a1a20']},
+{id:'slate',name:'Slate',desc:'Muted gray',colors:['#0f172a','#94a3b8','#1e293b']},
+{id:'amber',name:'Amber',desc:'Warm orange',colors:['#1a1000','#f97316','#2a1a00']},
+{id:'neon',name:'Neon',desc:'Toxic green',colors:['#050505','#39ff14','#0a0a0a']},
+{id:'magenta',name:'Magenta',desc:'Hot pink',colors:['#1a001a','#ff00ff','#2a002a']},
+{id:'coral',name:'Coral',desc:'Soft salmon',colors:['#1a0a06','#ff6b6b','#2a1a10']},
+{id:'chocolate',name:'Chocolate',desc:'Warm brown',colors:['#1a1008','#d2691e','#2a1a12']},
+{id:'indigo',name:'Indigo',desc:'Deep purple',colors:['#0a061f','#6366f1','#140f2e']},
+{id:'teal',name:'Teal',desc:'Aqua green',colors:['#0a1a1a','#14b8a6','#122a2a']},
+{id:'monokai',name:'Monokai',desc:'Classic code',colors:['#272822','#a6e22e','#3e3d32']},
+{id:'dracula',name:'Dracula',desc:'Vampire purple',colors:['#282a36','#ff79c6','#44475a']},
+{id:'nord',name:'Nord',desc:'Arctic frost',colors:['#2e3440','#88c0d0','#3b4252']},
+{id:'gruvbox',name:'Gruvbox',desc:'Retro brown',colors:['#282828','#fabd2f','#3c3836']},
+{id:'solarized',name:'Solarized',desc:'Muted teal',colors:['#002b36','#b58900','#073642']},
+{id:'matrix',name:'Matrix',desc:'Terminal green',colors:['#000000','#00ff41','#0d0d0d']},
+{id:'void',name:'Void',desc:'Blood red',colors:['#050508','#ff0040','#0c0c12']},
+{id:'cottoncandy',name:'Cotton Candy',desc:'Pastel pink',colors:['#fff0f5','#ff69b4','#ffe4e1']},
+{id:'seaside',name:'Seaside',desc:'Beach blue',colors:['#0a1a2a','#67e8f9','#122a3a']},
+{id:'autumn',name:'Autumn',desc:'Fall orange',colors:['#1a0f00','#e85d04','#2a1f0a']},
+{id:'royal',name:'Royal',desc:'Gold crown',colors:['#0a001a','#ffd700','#1a0030']}
+];
+function render(){
+const current=window.SkryptTheme.current();
+document.getElementById('themeGrid').innerHTML=themes.map(t=>`<div class="theme-card ${t.id===current?'active':''}" onclick="pick('${t.id}')"><div class="theme-preview">${t.colors.map(c=>`<div class="color-dot" style="background:${c}"></div>`).join('')}</div><div class="theme-info"><div class="theme-name">${t.name}</div><div class="theme-desc">${t.desc}</div></div></div>`).join('');
+}
+function pick(id){window.SkryptTheme.apply(id);render();}
+lucide.createIcons();
+render();
+</script>
+</body>
+</html>
