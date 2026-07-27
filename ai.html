@@ -100,12 +100,17 @@
     </main>
 
     <script>
-        // Your CeloAI key
         const CELOAI_API_KEY = "celo_mJMOgsBaWssDahuL9TZ1hJijexpexozQIlZJKOxzT9s";
+        const TARGET_URL = "https://api.celoai.org/api/celo/v1/chat/completions";
 
-        // CORS proxy routes the request so the browser allows it
+        // Proxies to try if direct fails (CORS blocked)
+        const PROXIES = [
+            "https://thingproxy.freeboard.io/fetch/",
+            "https://corsproxy.io/?",
+            "https://api.codetabs.com/v1/proxy?quest="
+        ];
+
         const CELOAI_CONFIG = {
-            endpoint: "https://corsproxy.io/?https://api.celoai.org/api/celo/v1/chat/completions",
             model: "llama-3.3-70b-versatile",
             maxTokens: 2048,
             temperature: 0.7
@@ -134,6 +139,41 @@
 
         sendBtn.addEventListener('click', sendMessage);
 
+        async function fetchWithProxy(proxyIndex, body) {
+            if (proxyIndex >= PROXIES.length) {
+                throw new Error("All proxies failed. CeloAI blocks browser requests (CORS). You need a backend proxy.");
+            }
+
+            const url = PROXIES[proxyIndex] + TARGET_URL;
+            console.log(`[Attempt ${proxyIndex + 1}/${PROXIES.length}] ${PROXIES[proxyIndex]}`);
+
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${CELOAI_API_KEY}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: body
+                });
+
+                if (!response.ok) {
+                    const text = await response.text();
+                    console.error(`Proxy ${proxyIndex + 1} HTTP ${response.status}:`, text);
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                return await response.json();
+
+            } catch (err) {
+                console.error(`Proxy ${proxyIndex + 1} failed:`, err.message);
+                if (err.message.includes("Failed to fetch") || err.message.includes("Load failed")) {
+                    return fetchWithProxy(proxyIndex + 1, body);
+                }
+                throw err;
+            }
+        }
+
         async function sendMessage() {
             const text = userInput.value.trim();
             if (!text) return;
@@ -146,27 +186,20 @@
             sendBtn.disabled = true;
             userInput.disabled = true;
 
-            try {
-                const response = await fetch(CELOAI_CONFIG.endpoint, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${CELOAI_API_KEY}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        model: CELOAI_CONFIG.model,
-                        messages: messageHistory,
-                        max_tokens: CELOAI_CONFIG.maxTokens,
-                        temperature: CELOAI_CONFIG.temperature
-                    })
-                });
+            const body = JSON.stringify({
+                model: CELOAI_CONFIG.model,
+                messages: messageHistory,
+                max_tokens: CELOAI_CONFIG.maxTokens,
+                temperature: CELOAI_CONFIG.temperature
+            });
 
-                if (!response.ok) {
-                    const err = await response.json().catch(() => ({}));
-                    throw new Error(err.error?.message || `HTTP ${response.status}`);
+            try {
+                const data = await fetchWithProxy(0, body);
+
+                if (!data.choices || !data.choices[0]) {
+                    throw new Error("Bad response: " + JSON.stringify(data).slice(0, 200));
                 }
 
-                const data = await response.json();
                 const reply = data.choices[0].message.content;
                 messageHistory.push({ role: "assistant", content: reply });
                 removeTyping();
@@ -174,8 +207,8 @@
 
             } catch (error) {
                 removeTyping();
-                addMessage("assistant", `❌ Error\n\n${error.message}`);
-                console.error("CeloAI Error:", error);
+                console.error("FULL ERROR:", error);
+                addMessage("assistant", `❌ Error: ${error.message}\n\nOpen browser console (F12) for details.`);
             } finally {
                 sendBtn.disabled = false;
                 userInput.disabled = false;
