@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) — Already on your site, keep it for analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-435XG5B8ZM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-435XG5B8ZM');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skrypt — AI</title>
+    
+    <!-- Favicon — Uses your existing logo. Change the path if yours is different. -->
+    <link rel="icon" type="image/png" href="/images/gc.png">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Skrypt AI — Your personal AI assistant.">
+    <meta name="keywords" content="Skrypt, AI, Bot, Assistant">
+    <meta name="author" content="Skrypt">
+
+    <!-- Fonts — Same as your other pages -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <!-- Theme Loader — Keeps dark/light mode consistent across pages -->
+    <script src="theme-loader.js"></script>
+
+    <!-- Your main stylesheet -->
+    <link rel="stylesheet" href="styles/index.css">
+
+    <!-- ========================================== -->
+    <!-- INSERT: Custom CSS for your AI Bot here    -->
+    <!-- If your bot needs its own stylesheet,      -->
+    <!-- add a <link> tag below this comment.       -->
+    <!-- Example:                                   -->
+    <!-- <link rel="stylesheet" href="styles/ai.css"> -->
+    <!-- ========================================== -->
+</head>
+<body>
+    <!-- Sidebar Navigation — Added 'AI' link so users can find this page -->
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="imgs/logo.png" alt="logo" height="50" width="50" style="border-radius: 20px;">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html" data-label="Home"><i data-lucide="home"></i></a></li>
+            <li><a href="games.html" data-label="Games"><i data-lucide="gamepad-2"></i></a></li>
+            <li><a href="apps.html" data-label="Apps"><i data-lucide="layers"></i></a></li>
+            <li><a href="music" data-label="Music"><i data-lucide="music-4"></i></a></li>
+            
+            <!-- AI Page Link — This page is now active -->
+            <li><a href="Ai.html" data-label="AI" class="active"><i data-lucide="bot"></i></a></li>
+            
+            <li><div class="nav-divider"></div></li>
+            <li><a href="chat" data-label="Chat" target="_blank"><i data-lucide="message-square"></i></a></li>
+            <li><a href="partners" data-label="Partners"><i data-lucide="handshake"></i></a></li>
+            <li><a href="extra" data-label="Extra"><i data-lucide="more-horizontal"></i></a></li>
+            <li><a href="settings" data-label="Settings"><i data-lucide="settings"></i></a></li>
+        </ul>
+    </aside>
+
+    <main class="main">
+        <!-- Hero Section for the AI Page -->
+        <div class="hero">
+            <div class="hero-badge">
+                <span class="pulse"></span>
+                AI Assistant
+            </div>
+            <h1>Skrypt AI</h1>
+            <p>Your personal AI, built by you, for you.</p>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- INSERT: Your AI Bot Container              -->
+        <!--                                            -->
+        <!-- This is the main wrapper where your bot    -->
+        <!-- will live. You can put your bot here in    -->
+        <!-- one of several ways:                       -->
+        <!--                                            -->
+        <!-- OPTION A: IFRAME                           -->
+        <!-- If your bot is hosted elsewhere (e.g.      -->
+        -- Gradio, Hugging Face, or another URL),     -->
+        <!-- paste your <iframe> code inside the div    -->
+        <!-- with id="ai-bot-container" below.          -->
+        <!--                                            -->
+        <!-- OPTION B: WEB COMPONENT / WIDGET           -->
+        <!-- If your bot provides a custom HTML tag     -->
+        <!-- (like <my-bot></my-bot>), paste it inside  -->
+        <!-- the container div below.                   -->
+        <!--                                            -->
+        <!-- OPTION C: CUSTOM CHAT UI                   -->
+        <!-- If you built a chat interface with HTML,   -->
+        <!-- put your chat HTML structure inside the    -->
+        <!-- container div below.                       -->
+        <!-- ========================================== -->
+
+        <div id="ai-bot-container" class="ai-bot-wrapper">
+            <!-- 
+                EXAMPLE IFRAME (replace with your own):
+                <iframe 
+                    src="https://your-bot-url-here.com" 
+                    width="100%" 
+                    height="600" 
+                    frameborder="0"
+                    title="Skrypt AI Bot">
+                </iframe>
+            -->
+
+            <!-- 
+                EXAMPLE CUSTOM CHAT UI SKELETON:
+                <div class="chat-window">
+                    <div class="chat-messages" id="chat-messages"></div>
+                    <div class="chat-input-area">
+                        <input type="text" id="user-input" placeholder="Ask me anything...">
+                        <button id="send-btn">Send</button>
+                    </div>
+                </div>
+            -->
+
+            <!-- Placeholder text — remove this once you insert your bot -->
+            <div class="ai-placeholder" style="text-align: center; padding: 4rem 2rem; border: 2px dashed rgba(255,255,255,0.1); border-radius: 16px; margin-top: 2rem;">
+                <i data-lucide="bot" style="width: 48px; height: 48px; opacity: 0.5; margin-bottom: 1rem;"></i>
+                <p style="opacity: 0.6; font-family: 'Inter', sans-serif;">Your AI bot will appear here.</p>
+                <p style="opacity: 0.4; font-size: 0.85rem; margin-top: 0.5rem;">Paste your bot code inside the <code>#ai-bot-container</code> div.</p>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- INSERT: API Keys & Configuration           -->
+        <!--                                            -->
+        <!-- If your bot needs an API key, model name,  -->
+        -- or other config variables, define them     -->
+        <!-- here in a <script> tag BEFORE your bot's   -->
+        <!-- main script loads.                         -->
+        <!-- ========================================== -->
+        <script>
+            // Example configuration object — edit or delete as needed
+            const SKRYPT_AI_CONFIG = {
+                // INSERT: Your API key here (if required)
+                // WARNING: For production, never expose private keys in frontend code.
+                // Use a backend proxy instead.
+                apiKey: "YOUR_API_KEY_HERE",
+
+                // INSERT: Your model endpoint or name
+                model: "your-model-name",
+
+                // INSERT: Custom system prompt or personality
+                systemPrompt: "You are Skrypt AI, a helpful assistant.",
+
+                // INSERT: Any other settings your bot needs
+                maxTokens: 500,
+                temperature: 0.7
+            };
+        </script>
+
+        <!-- ========================================== -->
+        <!-- INSERT: Your AI Bot JavaScript             -->
+        <!--                                            -->
+        <!-- Paste your bot's <script> tag below.       -->
+        <!-- If your bot is a module, use type="module" -->
+        <!--                                            -->
+        <!-- Example:                                   -->
+        <!-- <script src="js/my-bot.js"></script>       -->
+        <!--                                            -->
+        <!-- If you are loading from a CDN:             -->
+        <!-- <script src="https://cdn.example.com/bot.js"></script> -->
+        <!-- ========================================== -->
+
+    </main>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+
+    <!-- ========================================== -->
+    <!-- INSERT: Custom JavaScript for this page    -->
+    <!--                                            -->
+    <!-- If you need extra JS just for the AI page  -->
+    <!-- (event listeners, chat logic, etc.), put   -->
+    <!-- your <script> tags here at the bottom.     -->
+    <!--                                            -->
+    <!-- Example chat logic skeleton:               -->
+    <!--
+    <script>
+        // Grab your elements after the DOM loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const sendBtn = document.getElementById('send-btn');
+            const userInput = document.getElementById('user-input');
+            const chatMessages = document.getElementById('chat-messages');
+
+            // INSERT: Your send-message logic here
+            sendBtn?.addEventListener('click', () => {
+                const message = userInput.value.trim();
+                if (!message) return;
+                
+                // INSERT: Add user message to chat UI
+                // INSERT: Send message to your bot API
+                // INSERT: Display bot response
+                
+                userInput.value = '';
+            });
+        });
+    </script>
+    -->
+    <!-- ========================================== -->
+</body>
+</html>
