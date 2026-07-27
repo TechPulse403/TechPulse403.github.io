@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) — Already on your site, keep it for analytics -->
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-435XG5B8ZM"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -13,39 +13,225 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skrypt — AI</title>
-    
-    <!-- Favicon — Uses your existing logo. Change the path if yours is different. -->
     <link rel="icon" type="image/png" href="/images/gc.png">
-
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Skrypt AI — Your personal AI assistant.">
-    <meta name="keywords" content="Skrypt, AI, Bot, Assistant">
+    <meta name="description" content="Skrypt AI — Powered by CeloAI.">
+    <meta name="keywords" content="Skrypt, AI, CeloAI, Chatbot">
     <meta name="author" content="Skrypt">
 
-    <!-- Fonts — Same as your other pages -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-
-    <!-- Theme Loader — Keeps dark/light mode consistent across pages -->
     <script src="theme-loader.js"></script>
-
-    <!-- Your main stylesheet -->
     <link rel="stylesheet" href="styles/index.css">
 
     <!-- ========================================== -->
-    <!-- INSERT: Custom CSS for your AI Bot here    -->
-    <!-- If your bot needs its own stylesheet,      -->
-    <!-- add a <link> tag below this comment.       -->
-    <!-- Example:                                   -->
-    <!-- <link rel="stylesheet" href="styles/ai.css"> -->
+    <!-- INSERT: Extra CSS for the AI Chat UI       -->
+    <!-- Paste this into your styles/index.css OR   -->
+    <!-- keep it here in a <style> tag.             -->
     <!-- ========================================== -->
+    <style>
+        /* AI Chat Page Styles */
+        .ai-page {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 0px);
+            max-height: 100vh;
+            overflow: hidden;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            gap: 1rem;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .message {
+            display: flex;
+            gap: 0.75rem;
+            max-width: 85%;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message.assistant {
+            align-self: flex-start;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+        }
+
+        .message.assistant .message-avatar {
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+            color: white;
+        }
+
+        .message-bubble {
+            padding: 0.85rem 1.1rem;
+            border-radius: 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.assistant .message-bubble {
+            background: rgba(255, 255, 255, 0.06);
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .chat-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            resize: none;
+            max-height: 120px;
+        }
+
+        .chat-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: none;
+            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 1rem 1.1rem;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .welcome-msg {
+            text-align: center;
+            padding: 3rem 1rem;
+            opacity: 0.5;
+        }
+
+        .welcome-msg h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-msg p {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* Scrollbar styling */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+    </style>
 </head>
 <body>
-    <!-- Sidebar Navigation — Added 'AI' link so users can find this page -->
+    <!-- Sidebar Navigation -->
     <aside class="sidebar">
         <div class="logo">
             <img src="imgs/logo.png" alt="logo" height="50" width="50" style="border-radius: 20px;">
@@ -55,10 +241,7 @@
             <li><a href="games.html" data-label="Games"><i data-lucide="gamepad-2"></i></a></li>
             <li><a href="apps.html" data-label="Apps"><i data-lucide="layers"></i></a></li>
             <li><a href="music" data-label="Music"><i data-lucide="music-4"></i></a></li>
-            
-            <!-- AI Page Link — This page is now active -->
             <li><a href="Ai.html" data-label="AI" class="active"><i data-lucide="bot"></i></a></li>
-            
             <li><div class="nav-divider"></div></li>
             <li><a href="chat" data-label="Chat" target="_blank"><i data-lucide="message-square"></i></a></li>
             <li><a href="partners" data-label="Partners"><i data-lucide="handshake"></i></a></li>
@@ -67,150 +250,215 @@
         </ul>
     </aside>
 
-    <main class="main">
-        <!-- Hero Section for the AI Page -->
-        <div class="hero">
+    <main class="main ai-page">
+        <!-- Hero Section -->
+        <div class="hero" style="padding: 2rem 0 1rem;">
             <div class="hero-badge">
                 <span class="pulse"></span>
-                AI Assistant
+                CeloAI Powered
             </div>
             <h1>Skrypt AI</h1>
-            <p>Your personal AI, built by you, for you.</p>
+            <p>Ask anything — powered by Llama 3.3 70B</p>
         </div>
 
         <!-- ========================================== -->
-        <!-- INSERT: Your AI Bot Container              -->
-        <!--                                            -->
-        <!-- This is the main wrapper where your bot    -->
-        <!-- will live. You can put your bot here in    -->
-        <!-- one of several ways:                       -->
-        <!--                                            -->
-        <!-- OPTION A: IFRAME                           -->
-        <!-- If your bot is hosted elsewhere (e.g.      -->
-        -- Gradio, Hugging Face, or another URL),     -->
-        <!-- paste your <iframe> code inside the div    -->
-        <!-- with id="ai-bot-container" below.          -->
-        <!--                                            -->
-        <!-- OPTION B: WEB COMPONENT / WIDGET           -->
-        <!-- If your bot provides a custom HTML tag     -->
-        <!-- (like <my-bot></my-bot>), paste it inside  -->
-        <!-- the container div below.                   -->
-        <!--                                            -->
-        <!-- OPTION C: CUSTOM CHAT UI                   -->
-        <!-- If you built a chat interface with HTML,   -->
-        <!-- put your chat HTML structure inside the    -->
-        <!-- container div below.                       -->
+        <!-- CHAT UI — Fully wired to CeloAI API        -->
         <!-- ========================================== -->
-
-        <div id="ai-bot-container" class="ai-bot-wrapper">
-            <!-- 
-                EXAMPLE IFRAME (replace with your own):
-                <iframe 
-                    src="https://your-bot-url-here.com" 
-                    width="100%" 
-                    height="600" 
-                    frameborder="0"
-                    title="Skrypt AI Bot">
-                </iframe>
-            -->
-
-            <!-- 
-                EXAMPLE CUSTOM CHAT UI SKELETON:
-                <div class="chat-window">
-                    <div class="chat-messages" id="chat-messages"></div>
-                    <div class="chat-input-area">
-                        <input type="text" id="user-input" placeholder="Ask me anything...">
-                        <button id="send-btn">Send</button>
-                    </div>
+        <div class="chat-container">
+            <div class="chat-messages" id="chat-messages">
+                <div class="welcome-msg">
+                    <i data-lucide="bot" style="width: 40px; height: 40px; margin-bottom: 1rem;"></i>
+                    <h3>Skrypt AI</h3>
+                    <p>Start a conversation below.</p>
                 </div>
-            -->
+            </div>
 
-            <!-- Placeholder text — remove this once you insert your bot -->
-            <div class="ai-placeholder" style="text-align: center; padding: 4rem 2rem; border: 2px dashed rgba(255,255,255,0.1); border-radius: 16px; margin-top: 2rem;">
-                <i data-lucide="bot" style="width: 48px; height: 48px; opacity: 0.5; margin-bottom: 1rem;"></i>
-                <p style="opacity: 0.6; font-family: 'Inter', sans-serif;">Your AI bot will appear here.</p>
-                <p style="opacity: 0.4; font-size: 0.85rem; margin-top: 0.5rem;">Paste your bot code inside the <code>#ai-bot-container</code> div.</p>
+            <div class="chat-input-area">
+                <textarea 
+                    class="chat-input" 
+                    id="user-input" 
+                    placeholder="Type your message..." 
+                    rows="1"
+                ></textarea>
+                <button class="send-btn" id="send-btn">
+                    <i data-lucide="arrow-up" style="width: 20px; height: 20px;"></i>
+                </button>
             </div>
         </div>
-
-        <!-- ========================================== -->
-        <!-- INSERT: API Keys & Configuration           -->
-        <!--                                            -->
-        <!-- If your bot needs an API key, model name,  -->
-        -- or other config variables, define them     -->
-        <!-- here in a <script> tag BEFORE your bot's   -->
-        <!-- main script loads.                         -->
-        <!-- ========================================== -->
-        <script>
-            // Example configuration object — edit or delete as needed
-            const SKRYPT_AI_CONFIG = {
-                // INSERT: Your API key here (if required)
-                // WARNING: For production, never expose private keys in frontend code.
-                // Use a backend proxy instead.
-                apiKey: "YOUR_API_KEY_HERE",
-
-                // INSERT: Your model endpoint or name
-                model: "your-model-name",
-
-                // INSERT: Custom system prompt or personality
-                systemPrompt: "You are Skrypt AI, a helpful assistant.",
-
-                // INSERT: Any other settings your bot needs
-                maxTokens: 500,
-                temperature: 0.7
-            };
-        </script>
-
-        <!-- ========================================== -->
-        <!-- INSERT: Your AI Bot JavaScript             -->
-        <!--                                            -->
-        <!-- Paste your bot's <script> tag below.       -->
-        <!-- If your bot is a module, use type="module" -->
-        <!--                                            -->
-        <!-- Example:                                   -->
-        <!-- <script src="js/my-bot.js"></script>       -->
-        <!--                                            -->
-        <!-- If you are loading from a CDN:             -->
-        <!-- <script src="https://cdn.example.com/bot.js"></script> -->
-        <!-- ========================================== -->
-
     </main>
 
-    <!-- Initialize Lucide Icons -->
+    <!-- ========================================== -->
+    <!-- INSERT: YOUR CELOAI API KEY HERE           -->
+    <!-- ========================================== -->
     <script>
+        // ==========================================
+        // STEP 1: PASTE YOUR API KEY HERE
+        // Replace the text below with your actual 
+        // CeloAI key from celoai.lostbytes.me
+        // ==========================================
+        const CELOAI_API_KEY = "celo_paste_your_real_key_here";
+
+        // ==========================================
+        // STEP 2: API CONFIG (from your screenshots)
+        // These values are already correct based on
+        // your CeloAI dashboard. Only change if
+        // you switch models in your dashboard.
+        // ==========================================
+        const CELOAI_CONFIG = {
+            endpoint: "https://api.celoai.org/api/celo/v1/chat/completions",
+            model: "llama-3.3-70b-versatile",
+            maxTokens: 2048,
+            temperature: 0.7
+        };
+
+        // ==========================================
+        // CHAT LOGIC — No need to touch below
+        // unless you want to customize behavior
+        // ==========================================
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        let messageHistory = [
+            {
+                role: "system",
+                content: "You are Skrypt AI, a helpful and friendly assistant built for the Skrypt gaming hub. Keep responses concise but informative."
+            }
+        ];
+
+        // Auto-resize textarea
+        userInput.addEventListener('input', () => {
+            userInput.style.height = 'auto';
+            userInput.style.height = Math.min(userInput.scrollHeight, 120) + 'px';
+        });
+
+        // Send on Enter (Shift+Enter for new line)
+        userInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        sendBtn.addEventListener('click', sendMessage);
+
+        async function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            // Check if API key is still the placeholder
+            if (CELOAI_API_KEY === "celo_paste_your_real_key_here") {
+                addMessage("assistant", "⚠️ **API Key Missing**\n\nPlease open `Ai.html` and paste your real CeloAI API key into the `CELOAI_API_KEY` variable at the top of the `<script>` tag.");
+                return;
+            }
+
+            // Add user message to UI
+            addMessage("user", text);
+            userInput.value = '';
+            userInput.style.height = 'auto';
+
+            // Add user message to history
+            messageHistory.push({ role: "user", content: text });
+
+            // Show typing indicator
+            showTyping();
+
+            // Disable input while waiting
+            sendBtn.disabled = true;
+            userInput.disabled = true;
+
+            try {
+                // ==========================================
+                // API REQUEST — Matches your cURL exactly
+                // ==========================================
+                const response = await fetch(CELOAI_CONFIG.endpoint, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${CELOAI_API_KEY}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        model: CELOAI_CONFIG.model,
+                        messages: messageHistory,
+                        max_tokens: CELOAI_CONFIG.maxTokens,
+                        temperature: CELOAI_CONFIG.temperature
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error?.message || `HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                const assistantMessage = data.choices[0].message.content;
+
+                // Add assistant response to history
+                messageHistory.push({ role: "assistant", content: assistantMessage });
+
+                // Remove typing and show response
+                removeTyping();
+                addMessage("assistant", assistantMessage);
+
+            } catch (error) {
+                removeTyping();
+                addMessage("assistant", `❌ **Error**\n\n${error.message}\n\nMake sure your API key is valid and you have internet access.`);
+                console.error("CeloAI Error:", error);
+            } finally {
+                sendBtn.disabled = false;
+                userInput.disabled = false;
+                userInput.focus();
+            }
+        }
+
+        function addMessage(role, text) {
+            // Remove welcome message on first real message
+            const welcome = chatMessages.querySelector('.welcome-msg');
+            if (welcome) welcome.remove();
+
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${role}`;
+
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = role === 'user' ? 'YOU' : 'AI';
+
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            
+            // Simple markdown-like formatting
+            let formatted = text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n/g, '<br>');
+            bubble.innerHTML = formatted;
+
+            msgDiv.appendChild(avatar);
+            msgDiv.appendChild(bubble);
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTyping() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message assistant typing';
+            typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = `
+                <div class="message-avatar">AI</div>
+                <div class="message-bubble typing-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeTyping() {
+            const typing = document.getElementById('typing-indicator');
+            if (typing) typing.remove();
+        }
+
+        // Init Lucide icons
         lucide.createIcons();
     </script>
-
-    <!-- ========================================== -->
-    <!-- INSERT: Custom JavaScript for this page    -->
-    <!--                                            -->
-    <!-- If you need extra JS just for the AI page  -->
-    <!-- (event listeners, chat logic, etc.), put   -->
-    <!-- your <script> tags here at the bottom.     -->
-    <!--                                            -->
-    <!-- Example chat logic skeleton:               -->
-    <!--
-    <script>
-        // Grab your elements after the DOM loads
-        document.addEventListener('DOMContentLoaded', () => {
-            const sendBtn = document.getElementById('send-btn');
-            const userInput = document.getElementById('user-input');
-            const chatMessages = document.getElementById('chat-messages');
-
-            // INSERT: Your send-message logic here
-            sendBtn?.addEventListener('click', () => {
-                const message = userInput.value.trim();
-                if (!message) return;
-                
-                // INSERT: Add user message to chat UI
-                // INSERT: Send message to your bot API
-                // INSERT: Display bot response
-                
-                userInput.value = '';
-            });
-        });
-    </script>
-    -->
-    <!-- ========================================== -->
 </body>
 </html>
